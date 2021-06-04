@@ -407,16 +407,14 @@ def load_data_adjacency_n_greatest_clusters(roi='BRAC4002.3c_ROI3_MRTX.', cutoff
     full2_nandrop=full2.dropna()
 
 
-    le_domain = preprocessing.LabelEncoder()
-    full2_nandrop[label_output] = le_domain.fit_transform(full2_nandrop[label_output])
+    # le_domain = preprocessing.LabelEncoder()
+    # full2_nandrop[label_output] = le_domain.fit_transform(full2_nandrop[label_output])
 
     loc_all_cell = full2_nandrop[['Location_Center_X','Location_Center_Y']].to_numpy()
 
     cols_to_drop=['X.1', 'X.2','X.3']
 
-    t=full2_nandrop['cluster'].value_counts().to_frame()
-    valid_clusters=t.nlargest(n_clusters,'cluster').index
-    full2_nandrop=full2_nandrop[full2_nandrop['cluster'].isin( valid_clusters)]
+ 
 
     output_df=full2_nandrop.drop(cols_to_drop, axis=1)
 
@@ -426,6 +424,10 @@ def load_data_adjacency_n_greatest_clusters(roi='BRAC4002.3c_ROI3_MRTX.', cutoff
 
     output_df = output_df[(output_df.ROI_name==(roi))]
     output_df = output_df.sample(frac=1).reset_index(drop=True)
+
+    t=output_df['cluster'].value_counts().to_frame()
+    valid_clusters=t.nlargest(n_clusters,'cluster').index
+    output_df=output_df[output_df['cluster'].isin(valid_clusters)]
 
     loc_roi = output_df[['Location_Center_X','Location_Center_Y']].to_numpy()
     
@@ -453,6 +455,8 @@ def load_data_adjacency_n_greatest_clusters(roi='BRAC4002.3c_ROI3_MRTX.', cutoff
     cols_to_drop = ['Location_Center_X','Location_Center_Y']
     output_df=output_df.drop(cols_to_drop,axis=1)
 
+    le_domain = preprocessing.LabelEncoder()
+    output_df[label_output] = le_domain.fit_transform(output_df[label_output])
 
     labels = output_df[label_output].to_numpy()
     features = output_df.drop(label_output,axis=1)

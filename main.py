@@ -4,24 +4,26 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
-
 from utils import load_data, accuracy, load_data_adjacency, load_data_laplacian
-
-
-
+from utils2 import load_data_adjacency_clusters_with_greater_than_x, load_data_adjacency_n_greatest_clusters
+import matplotlib.pyplot as plt
 from layer import GCN
 
-dropout=0.2
-epochs=200
+dropout=0.5
+epochs=50
 hidden_dim=64
-lr = 0.02
-weight_decay=0.005
+lr = 0.1
+weight_decay=0.0005
 t_factor=1
-
+values=[]
+plot_accuracy = True
+roi = 'BRAC3529.2b_ROI1_MRTX_crop2.'
+label_output = 'cluster'
 
 torch.manual_seed(0)
 
-adj, features, labels , edge_index , edge_weight = load_data_adjacency('BRAC4002.3c_ROI2_MRTX_crop1.')
+# adj, features, labels , edge_index , edge_weight = load_data_adjacency(roi,label_output=label_output)
+adj, features, labels , edge_index , edge_weight = load_data_adjacency_n_greatest_clusters(roi,cutoff=40,label_output=label_output,n_clusters=20)
 # S, features, labels , edge_index , edge_weight = load_data_laplacian(t_factor=1)
 # S, features, labels , edge_index , edge_weight = load_data()
 
@@ -66,7 +68,7 @@ for epoch in range(epochs):
     loss_val = F.cross_entropy(output[idx_val], labels[idx_val])
 
     acc_val = accuracy(output[idx_val], labels[idx_val])
-
+    values.append(acc_train.item())
     print('Epoch: {:04d}'.format(epoch+1),
             'loss_train: {:.4f}'.format(loss_train.item()),
             'acc_train: {:.4f}'.format(acc_train.item()),
@@ -84,3 +86,12 @@ acc_test = accuracy(output[idx_test], labels[idx_test])
 print("Test set results:",
         "loss= {:.4f}".format(loss_test.item()),
         "accuracy= {:.4f}".format(acc_test.item()))
+
+if plot_accuracy:
+    plt.plot(values)
+    plt.xlabel('Epochs')
+    plt.ylabel("Accuracy")
+    plt.title(f"Epochs: {epochs}, ROI: {roi} , 3 layer GCN: (Relu,Sigmoid,log_softmax), Test Accuracy: {acc_test}, Output: {label_output}")
+    plt.savefig(f'plots/20 largest clusters , Epochs: {epochs}, ROI: {roi} , 3 layer GCN: (Relu,sigmoid,log_softmax), Test Accuracy: {acc_test}, Output: {label_output}.png')
+    # plt.show()
+    

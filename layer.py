@@ -8,8 +8,6 @@ from torch.nn.modules.module import Module
 from  torch_geometric.nn import GCNConv, Sequential
 
 
-# 
-
 class GCN(nn.Module):
     def __init__(self, num_feat, num_hid, num_class,dropout):
 
@@ -22,12 +20,13 @@ class GCN(nn.Module):
         self.dropout = dropout
 
     def forward(self,x,edge_index,edge_weight): 
-        x= F.relu(self.gc1(x=x, edge_index= edge_index , edge_weight = edge_weight))
+        x= F.elu(self.gc1(x=x, edge_index= edge_index , edge_weight = edge_weight))
         x = F.dropout(x, self.dropout, training=self.training)
-        x = F.relu(self.gc2(x=x.float(),edge_index= edge_index, edge_weight= edge_weight))
+        x = torch.sigmoid(self.gc2(x=x.float(),edge_index= edge_index, edge_weight= edge_weight))
         x = F.dropout(x, self.dropout, training=self.training)
-        x = F.relu(self.gc3(x=x.float(),edge_index= edge_index, edge_weight= edge_weight))
+        x = F.elu(self.gc3(x=x.float(),edge_index= edge_index, edge_weight= edge_weight))
         x = F.dropout(x, self.dropout, training=self.training)
         x = self.gc4(x=x.float(),edge_index= edge_index, edge_weight= edge_weight)
         return F.log_softmax(x, dim=1)
+    
     

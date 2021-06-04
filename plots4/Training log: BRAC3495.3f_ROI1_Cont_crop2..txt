@@ -1,0 +1,4 @@
+Training the model
+Epoch: 1, loss_train: 4.2505, acc_train: 0.0000, loss_val: 4.2608, acc_val: 0.0000, time:10.0431
+Epoch: 2, loss_train: 5.8732, acc_train: 0.1029, loss_val: 5.8116, acc_val: 0.1041, time:8.7699
+Test set results: lost=6.3946 , accuracy= 0.0921

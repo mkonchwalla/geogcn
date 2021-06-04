@@ -1,0 +1,11 @@
+Training the model
+Epoch: 1, loss_train: 49895.6228, acc_train: 0.0949, loss_val: 49586.7333, acc_val: 0.0922, time:10.0177
+Epoch: 2, loss_train: 187592.8175, acc_train: 0.0902, loss_val: 185066.8365, acc_val: 0.0847, time:10.8294
+Epoch: 3, loss_train: 106449.9100, acc_train: 0.0677, loss_val: 104869.9635, acc_val: 0.0728, time:9.1349
+Epoch: 4, loss_train: 3198385.2457, acc_train: 0.0607, loss_val: 3149239.2851, acc_val: 0.0663, time:9.2142
+Epoch: 5, loss_train: 1146117.4892, acc_train: 0.2900, loss_val: 1149899.2950, acc_val: 0.2832, time:9.1662
+Epoch: 6, loss_train: 162345.2065, acc_train: 0.0195, loss_val: 164421.1690, acc_val: 0.0183, time:9.2162
+Epoch: 7, loss_train: 126954.2553, acc_train: 0.0475, loss_val: 127420.5941, acc_val: 0.0502, time:9.3589
+Epoch: 8, loss_train: 150954.9056, acc_train: 0.0259, loss_val: 152394.1528, acc_val: 0.0232, time:10.0322
+Epoch: 9, loss_train: 90718.9689, acc_train: 0.1223, loss_val: 91998.3226, acc_val: 0.1219, time:10.5470
+Epoch: 10, loss_train: 57681.0446, acc_train: 0.0959, loss_val: 58902.3113, acc_val: 0.1030, time:9.7670

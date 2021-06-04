@@ -195,7 +195,6 @@ def load_data_adjacency(roi='BRAC4002.3c_ROI3_MRTX.', cutoff= 25, output='dict',
 
 
     le_domain = preprocessing.LabelEncoder()
-
     full2_nandrop[label_output] = le_domain.fit_transform(full2_nandrop[label_output])
 
     loc_all_cell = full2_nandrop[['Location_Center_X','Location_Center_Y']].to_numpy()
@@ -209,7 +208,7 @@ def load_data_adjacency(roi='BRAC4002.3c_ROI3_MRTX.', cutoff= 25, output='dict',
 
     output_df = output_df[(output_df.ROI_name==(roi))]
     output_df = output_df.sample(frac=1).reset_index(drop=True)
-    
+
     loc_roi = output_df[['Location_Center_X','Location_Center_Y']].to_numpy()
     
 
@@ -236,19 +235,21 @@ def load_data_adjacency(roi='BRAC4002.3c_ROI3_MRTX.', cutoff= 25, output='dict',
     cols_to_drop = ['Location_Center_X','Location_Center_Y']
     output_df=output_df.drop(cols_to_drop,axis=1)
 
-    
-
 
     labels = output_df[label_output].to_numpy()
     features = output_df.drop(label_output,axis=1)
 
     # indexes_to_encode = [2, 3, 21, 22, 23, 24, 55]
 
-    to_encode = ['cellID', 'cellType', 'Treatment', 'ROI_name', 'Filename', 'Clustername', 'clustername_tumour']
+    to_encode = ['cellID', 'cellType', 'Treatment', 'ROI_name', 'Filename', 'Clustername', 'clustername_tumour','Domain']
+
+    if label_output in to_encode: 
+        to_encode.remove(label_output)
 
     for col in to_encode: 
         le_domain = preprocessing.LabelEncoder()
         features[col] = le_domain.fit_transform(features[col])
+        
     features=features.to_numpy()
 
     print(adj.shape,features.shape,labels.shape)
@@ -383,7 +384,7 @@ def load_data_laplacian(roi='BRAC4002.3c_ROI3_MRTX.', cutoff= 25, output='dict',
     return S, torch.tensor(features), torch.tensor(labels) , edge_index ,edge_weight
 
 if __name__=='__main__':
-    load_data_laplacian(t_factor=2)
+    load_data_adjacency(label_output='cluster')
 
 
 
